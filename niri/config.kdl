@@ -1,8 +1,8 @@
 prefer-no-csd // Disable the title bar of windows
 input {
     keyboard {
-      repeat-rate 35
-      repeat-delay 200
+      //repeat-rate 35
+      //repeat-delay 200
         xkb {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
@@ -54,11 +54,33 @@ input {
     }
 
     // Uncomment this to make the mouse warp to the center of newly focused windows.
-    warp-mouse-to-focus
+    //warp-mouse-to-focus
 
     focus-follows-mouse max-scroll-amount="0%"
 }
+cursor {
+    xcursor-theme "Bibata-Modern-Ice"
+    xcursor-size 24
+    hide-when-typing
+    hide-after-inactive-ms 5000
+}
+overview {
+    zoom 0.5
+    // backdrop-color "#262626"
+    backdrop-color "#000000"
+    workspace-shadow {
+        on
+        softness 40
+        spread 10
+        offset x=10 y=10
+        color "#00000050"
+    }
+}
 
+xwayland-satellite {
+    // off
+    path "xwayland-satellite"
+}
 // You can configure outputs by their name, which you can find
 // by running `niri msg outputs` while inside a niri instance.
 // The built-in laptop monitor is usually called "eDP-1".
@@ -75,7 +97,7 @@ input {
     // for the resolution.
     // If the mode is omitted altogether or is invalid, niri will pick one automatically.
     // Run `niri msg outputs` while inside a niri instance to list all outputs and their modes.
-    mode "1920x1080@120.030"
+    mode "1920x1080@59.887"
 
     // You can use integer or fractional scale, for example use 1.5 for 150% scale.
     scale 2
@@ -115,7 +137,7 @@ layout {
     }
     border {
         on
-        width 3
+        width 2
         active-color "#ffc87f"
         inactive-color "#505050"
         urgent-color "#9b0000"
@@ -133,6 +155,13 @@ layout {
         // top 64
         // bottom 64
     }
+
+
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
 }
 
 // // // // // // // // // // //
@@ -143,7 +172,7 @@ hotkey-overlay {
     skip-at-startup
 }
 
-//spawn-at-startup "qs" "-c" "noctalia-shell"
+spawn-at-startup "qs" "-c" "noctalia-shell"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -163,7 +192,56 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 animations {
     on
     slowdown 2.0
+
+    workspace-switch {
+        spring damping-ratio=3.0 stiffness=9000 epsilon=0.0001
+    }
+
+    window-open {
+        duration-ms 150
+        curve "ease-out-expo"
+    }
+
+        window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    window-movement {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    window-resize {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    config-notification-open-close {
+        spring damping-ratio=0.6 stiffness=1000 epsilon=0.001
+    }
+
+    exit-confirmation-open-close {
+        spring damping-ratio=0.6 stiffness=500 epsilon=0.01
+    }
+
+    screenshot-ui-open {
+        duration-ms 200
+        curve "ease-out-quad"
+    }
+
+    overview-open-close {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    recent-windows-close {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.001
+    }
+
 }
+
 // // // // // // // // // //
 // // // Environment // // //
 // // // // // // // // // //
@@ -172,19 +250,44 @@ environment {
 }
 
 // // // // // // // // // //
+// // // Layer Rules // // //
+// // // // // // // // // //
+
+
+layer-rule {
+  match namespace="^noctalia-overview*"
+  place-within-backdrop true
+}
+
+// // // // // // // // // //
 // // // Window Rule // // //
 // // // // // // // // // //
 
-// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    geometry-corner-radius 6
+    clip-to-geometry true
+}
+
+// For Kitty, set open-maximized back to false.
+window-rule {
+    match app-id="kitty"
+    open-maximized false
+}
+window-rule {
+    match app-id="thunar"
+    open-floating true
+}
+// Open the Brave picture-in-picture player as floating by default.
 window-rule {
     match app-id=r#"brave$"# title="^Picture-in-Picture$"
     open-floating true
 }
 
-// window-rule {
-//   match app-id=r#"thunar$"# title="Levi - Thunar"
-//   open-floating true
-// }
+// Set open-maximized to true for all windows.
+window-rule {
+    open-maximized false
+}
+
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
@@ -196,10 +299,6 @@ window-rule {
     // block-out-from "screencast"
 }
 
-window-rule {
-    geometry-corner-radius 6
-    clip-to-geometry true
-}
 
 // // // // // // // // // // //
 // // // // Keybinds // // // //
@@ -209,13 +308,17 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
     Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
     Mod+B hotkey-overlay-title="Open a Browser: Brave" { spawn "brave"; }
+    Mod+N hotkey-overlay-title="Open Notification history: Noctalia" {spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory";}
     Mod+A hotkey-overlay-title="Run an Application: Noctalia" {spawn-sh "qs -c noctalia-shell ipc call launcher toggle";}
+    Mod+Shift+L hotkey-overlay-title="Lock the Screnn" {spawn-sh "qs -c noctalia-shell ipc call lockScreen lock";}
     Mod+Space hotkey-overlay-title="Open Noctalia ControlCenter" {spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle";}
     Mod+Shift+S hotkey-overlay-title="Open Noctalia Setting" {spawn-sh "qs -c noctalia-shell ipc call settings toggle";}
     Mod+Shift+N hotkey-overlay-title="Toggle Noctalia Night Mode" {spawn-sh "qs -c noctalia-shell ipc call nightLight toggle";}
     Mod+Shift+W hotkey-overlay-title="Wallpaper changer of Noctalia" {spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle";}
     Ctrl+Escape hotkey-overlay-title="Kill or Start: Noctalia" {spawn-sh "qs -c noctalia-shell ipc call bar toggle";}
-
+    Mod+Escape hotkey-overlay-title="Toggle Noctalia session menu" {spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle";}
+    Mod+Shift+C hotkey-overlay-title="Show the Calander"  {spawn-sh "qs -c noctalia-shell ipc call calendar toggle";}
+    Mod+Alt+R hotkey-overlay-title="Restart Noctalia shell"  {spawn-sh "noctalia restart";}
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume decrease"; }
     XF86AudioMute        allow-when-locked=true { spawn-sh "	qs -c noctalia-shell ipc call volume muteOutput"; }
@@ -226,7 +329,9 @@ binds {
     XF86AudioNext        allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media next"; }
     XF86MonBrightnessUp allow-when-locked=true { spawn "qs -c noctalia-shell ipc call brightness increase"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn "qs -c noctalia-shell ipc call brightness decrease"; }
-
+    XF86HomePage {spawn "brave";}
+    xf86Calculator {spawn-sh "qs -c noctalia-shell ipc call launcher calculator";}
+    XF86AudioMedia {spawn-sh "env LD_PRELOAD=/usr/lib/spotify-adblock.so spotify --uri=%U";}
     Mod+O repeat=false { toggle-overview; } // or move the mouse into the top-left hot corner,
     Mod+Q repeat=false { close-window; }
 
@@ -267,7 +372,7 @@ binds {
     Mod+Shift+H     { focus-monitor-left; }
     Mod+Shift+J     { focus-monitor-down; }
     Mod+Shift+K     { focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
+    //Mod+Shift+L     { focus-monitor-right; }
 
     Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
     Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
@@ -368,6 +473,7 @@ binds {
 
     // Switches focus between the current and the previous workspace.
     // Mod+Tab { focus-workspace-previous; }
+    Mod+Tab {spawn-sh "bind = Super, TAB, exec, qs ipc -c overview call overview toggle";}
 
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.
@@ -441,7 +547,7 @@ binds {
     //
     // The allow-inhibiting=false property can be applied to other binds as well,
     // which ensures niri always processes them, even when an inhibitor is active.
-    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    // Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }
@@ -450,3 +556,4 @@ binds {
     Mod+Shift+P { power-off-monitors; }
 }
 include "./noctalia.kdl"
+
