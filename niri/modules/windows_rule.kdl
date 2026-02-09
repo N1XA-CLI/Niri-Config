@@ -1,0 +1,46 @@
+
+// // // // // // // // // //
+// // // Window Rule // // //
+// // // // // // // // // //
+
+window-rule {
+    geometry-corner-radius 6
+    clip-to-geometry true
+}
+
+// For Kitty, set open-maximized back to false.
+window-rule {
+    match app-id="kitty"
+    open-maximized false
+}
+window-rule {
+    match app-id="thunar"
+    open-floating true
+}
+// Open the Brave picture-in-picture player as floating by default.
+window-rule {
+    match app-id=r#"brave$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Set open-maximized to true for all windows.
+window-rule {
+    open-maximized false
+}
+
+// Example: block out two password managers from screen capture.
+// (This example rule is commented out with a "/-" in front.)
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+window-rule {
+    match app-id="Tk"
+    open-floating true
+    //default-floating-position x=-100 y=0 relative-to="top"
+}

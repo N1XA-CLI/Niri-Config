@@ -1,0 +1,7 @@
+output "PNP(XXX) AAA Unknown" {
+    // off
+    mode "1440x900@59.887"
+    scale 1
+    transform "normal"
+    position x=1280 y=0
+}

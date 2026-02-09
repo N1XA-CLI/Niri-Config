@@ -1,0 +1,12 @@
+
+// // // // // // // // // //
+// // // Layer Rules // // //
+// // // // // // // // // //
+
+layer-rule {
+    // match namespace="swww-daemonoverlay"
+    place-within-backdrop true
+}
+layout {
+    background-color "transparent"
+}
