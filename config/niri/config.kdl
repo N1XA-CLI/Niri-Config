@@ -1,0 +1,13 @@
+prefer-no-csd // Disable the title bar of windows
+
+include "./modules/decoration.kdl"
+include "./modules/layer_rule.kdl"
+include "./modules/input.kdl"
+include "./modules/monitors.kdl"
+include "./modules/env.kdl"
+include "./modules/keybinds.kdl"
+include "./modules/autostart.kdl"
+include "./modules/windows_rule.kdl"
+include "./modules/animation.kdl"
+include "./modules/cursor.kdl"
+include "./modules/screenshot.kdl"

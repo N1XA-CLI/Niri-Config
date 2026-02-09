@@ -1,0 +1,284 @@
+/***
+ *    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┳┓┳┳┳┓┳┓┓ ┏┓┏┓  ┏┓┏┓┳┓┏┓┳┏┓
+ *    ┃┃┃┣┫┗┫┣┫┣┫┣┫━━┣┫┃┃┣┫┣┫┃ ┣ ┗┓━━┃ ┃┃┃┃┣ ┃┃┓
+ *    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┻┛┗┛┻┛┻┛┗┛┗┛┗┛  ┗┛┗┛┛┗┻ ┻┗┛
+ *                                              
+ */
+
+
+
+ {
+
+	/*----------Global Properties-------------*/
+	"layer": "top",
+	"position": "top",
+	"spacing": 0,
+	"height": 35,
+	"margin-top": 0,
+	"margin-right": 0,
+	"margin-bottom": 0,
+	"margin-left": 0,
+	/*----------Modules Left----------------*/
+	"modules-left": [
+		"custom/launcher",
+		"group/utility",
+		"custom/playerctl#backward",
+		"custom/playerctl#play",
+		"custom/playerctl#foward",
+		"custom/music"
+		//"custom/playerlabel"
+	],
+	/*----------Modules Center--------------*/
+	"modules-center": [
+		"custom/weather",
+		"hyprland/workspaces",
+		"custom/swaync"
+	],
+	/*----------Modules Center--------------*/
+	"modules-right": [
+		"tray",
+		// "battery",
+		"pulseaudio",
+		"pulseaudio#microphone",
+		"network",
+		"clock"
+	],
+
+	/*----------Hyprland Workspace----------*/
+	"hyprland/workspaces": {
+		"format": "{name}",
+		"on-click": "activate",
+		"on-scroll-down": "hyprctl dispatch workspace e+1",
+		"on-scroll-up": "hyprctl dispatch workspace e-1"
+	},
+
+	/*-----------Weather---------------*/
+	"custom/weather": {
+		"format": "{}",
+		"format-alt": "{alt}: {}",
+		"format-alt-click": "click",
+		"interval": 3600,
+		"return-type": "json",
+		"exec": "$HOME/.config/waybar/scripts/Weather.py",
+	  //"exec": "$HOME/.config/hypr/UserScripts/Weather.sh",
+	  //"exec-if": "ping wttr.in -c1",
+	  "tooltip": true
+	},
+	/*-----------SwayNC----------------*/
+
+	"custom/swaync": {
+		"tooltip": true,
+		"tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
+		"format": "{} {icon} ",
+		"format-icons": {
+			"notification": "<span foreground='red'><sup></sup></span>",
+			"none": "",
+			"dnd-notification": "<span foreground='red'><sup></sup></span>",
+			"dnd-none": "",
+			"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			"inhibited-none": "",
+			"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			"dnd-inhibited-none": ""
+		},
+		"return-type": "json",
+		"exec-if": "which swaync-client",
+		"exec": "swaync-client -swb",
+		"on-click": "sleep 0.1 && swaync-client -t -sw",
+		"on-click-right": "swaync-client -d -sw",
+		"escape": true
+	},
+
+
+	/*---------------Launcher-------------*/
+	"custom/launcher": {
+		"format": "󰣇",
+		"tooltip": false,
+		"on-click": "~/.config/rofi/scripts/sidelauncher"
+	},
+
+	/*-----------Cpu, Memory, Colorpicker, Temperature, Idle-inhibitor------*/
+	"cpu": {
+		"format": "󰻠",
+		"tooltip": true
+	},
+	"memory": {
+		"format": ""
+	},
+	"temperature": {
+		"critical-threshold": 80,
+		"format": ""
+	},
+	"custom/colorpicker": {
+		"format": "{}",
+		"return-type": "json",
+		"interval": "once",
+		"exec": "~/.config/waybar/scripts/Colorpicker.sh -j",
+		"on-click": "~/.config/waybar/scripts/Colorpicker.sh",
+		"signal": 1
+	},
+
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "",
+			"deactivated": ""
+		}
+	},
+
+	/*----------------Expand---------------*/
+	"custom/expand": {
+		"format": "",
+		"tooltip": true,
+		"tooltip-format": "Click to show utilities"
+	},
+
+	/*-----------Group-------------------*/
+	"group/utility": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 600,
+			"children-class": "child-utility",
+			"transition-left-to-right": true,
+			"click-to-reveal": true
+		},
+		"modules": [
+			"custom/expand",
+			"cpu",
+			"memory",
+			"temperature",
+			"idle_inhibitor",
+			"custom/colorpicker"
+		]
+	},
+
+	/*---------------Playerctl---------------*/
+	"custom/playerctl#backward": {
+		"format": "󰙣 ",
+		"on-click": "~/.config/hypr/scripts/volume.sh --prev",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"tooltip": false
+	},
+	"custom/playerctl#foward": {
+		"format": "󰙡 ",
+		"on-click": "~/.config/hypr/scripts/volume.sh --next",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"tooltip": false
+	},
+	"custom/playerctl#play": {
+		"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+		"format": "{icon}",
+		"format-icons": {
+			"Paused": "<span> </span>",
+			"Playing": "<span>󰏥 </span>",
+			"Stopped": "<span> </span>"
+		},
+		"on-click": "~/.config/hypr/scripts/volume.sh --play-pause",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"return-type": "json"
+	},
+	"custom/music": {
+        //"format": "{icon}{0}",
+        "format": "<span>󰎈 {} 󰎈</span>",
+        "format-icons": {
+            // "Playing": " ", // Uncomment if not using the dynamic script
+            "Paused": " ",
+            "Stopped": "&#x202d;ﭥ " // This stop symbol is RTL. So &#x202d; is left-to-right override.
+        },
+        "escape": true,
+        "exec": "~/.config/waybar/scripts/caway -b 10",
+        "return-type": "json",
+        "on-click": "~/.config/hypr/scripts/volume.sh --prev",
+		"on-click-middle": "~/.config/hypr/scripts/volume.sh --play-pause",
+    	"on-click-right": "~/.config/hypr/scripts/volume.sh --next",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+        "max-length": 35,
+		"tooltip": true
+    },
+	/*---------------Battery-------------*/
+
+	// "battery": {
+	// 	"format": "{icon}  {capacity}%",
+	// 	"format-alt": "{icon} {time}",
+	// 	"format-charging": " {capacity}%",
+	// 	"format-icons": [
+	// 		"",
+	// 		"",
+	// 		"",
+	// 		"",
+	// 		""
+	// 	],
+	// 	"format-plugged": " {capacity}% ",
+	// 	"format-time": "{H} h {m} min",
+	// 	"states": {
+	// 		"critical": 15,
+	// 		"good": 95,
+	// 		"warning": 30
+	// 	},
+	// 	"on-scroll-up": "~/.config/hypr/scripts/backlight.sh --inc",
+	// 	"on-scroll-down": "~/.config/hypr/scripts/backlight.sh --dec"
+	// },
+
+	/*------------Tray--------------------*/
+	"tray": {
+		"icon-size": 20,
+		"spacing": 8
+	},
+
+	/*---------------Pulseaudio------------*/
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-icons": {
+			"default": [
+				"󰕿",
+				"󰖀",
+				"󰕾"
+			]
+		},
+		"format-muted": "󰝟",
+		"on-click": "pavucontrol",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+		"on-click-right": "~/.config/hypr/scripts/volume.sh --toggle"
+
+	},
+	/*---------------Microphone------------*/
+	"pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "  Muted",
+        "on-click": "~/.config/hypr/scripts/volume.sh --toggle-mic",
+        "on-scroll-up": "~/.config/hypr/scripts/volume.sh --mic-inc",
+        "on-scroll-down": "~/.config/hypr/scripts/volume.sh --mic-dec"
+    },
+
+	/*--------------Network-----------------*/
+	"network": {
+		"format-disconnected": "󰖪 0% ",
+		"format-ethernet": "󰈀 100% ",
+		"format-linked": "{ifname} (No IP)",
+		"format-wifi": "  {signalStrength}%",
+		"tooltip-format": "Connected to {essid} {ifname} via {gwaddr}",
+		"on-click": "kitty --title KittyNmtui sh -c  'sleep 0.1; nmtui'"
+	},
+
+	/*------------Clock------------------*/
+	"clock": {
+		"format": "󰥔 {:%I:%M:%S %p} ",
+		"interval": 1,   
+		"tooltip-format": "<tt>{calendar}</tt>",
+		"calendar": {
+			"format": {
+				"today": "<span color='#fAfBfC'><b>{}</b></span>"
+			}
+		},
+		"actions": {
+			"on-click-right": "shift_down",
+			"on-click": "shift_up"
+		}
+	}
+
+ }

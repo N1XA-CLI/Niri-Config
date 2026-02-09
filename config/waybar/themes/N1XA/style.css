@@ -1,0 +1,199 @@
+@import '/home/levi/.config/waybar/matugen/matugen-waybar.css';
+
+/* --------------------------------------------------
+   GLOBAL
+-------------------------------------------------- */
+
+* {
+    all: unset; 
+    border: none;
+    border-radius: 0;
+    font-family: JetBrainsMono Nerd Font, monospace;
+    font-weight: bold;
+    font-size: 14px;
+    min-height: 0;
+}
+
+tooltip {
+  background: @on_primary;
+  border: 2px solid @foreground;
+  border-radius: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: @color7;
+}
+window#waybar {
+    background: @surface-alpha; /* blur-only / no color */
+    color: @foreground;
+}
+
+
+/* --------------------------------------------------
+   WORKSPACES
+-------------------------------------------------- */
+
+#workspaces button {
+    padding: 5px;
+    color: @color7;
+    margin-right: 5px;
+}
+
+#workspaces button.active {
+    color: @color14;
+}
+
+#workspaces button.focused {
+    color: @foreground;
+    background: @color1;      /* active workspace */
+    border-radius: 10px;
+}
+
+#workspaces button.urgent {
+    color: @background;
+    background: @color2;
+    border-radius: 10px;
+}
+
+#workspaces button:hover {
+    background: @foreground;  /* hover accent */
+    color: @background;
+    border-radius: 10px;
+    background: @cursor;
+    /* background: @color1; */
+    /* background: @color14; */
+    /* background: @color13; */
+}
+
+
+/* --------------------------------------------------
+   MODULE BACKGROUNDS
+-------------------------------------------------- */
+#clock,
+#workspaces,
+#window,
+#tray,
+#memory,
+#cpu,
+#pulseaudio,
+#network,
+#idle_inhibitor,
+#custom-temperature,
+#custom-light,
+#custom-playerctl.backward,
+#custom-player.play,
+#custom-player.forward,
+#custom-music
+{
+    background: @background;
+    padding: 0 10px;
+    margin: 3px 0;
+    margin-top: 5px;
+    color: @color7;
+}
+
+#workspaces {
+    border-radius: 10px;
+    margin-left: 10px;
+    padding-left: 5px;
+    padding-right: 0;
+}
+
+#custom-media{
+    border-radius: 10px; 
+    margin-left: 10px;
+    padding-left: 5px;
+    padding-right: 0;
+}
+
+/* --------------------------------------------------
+   TRAY
+-------------------------------------------------- */
+
+#tray {
+    border-radius: 10px;
+    margin-right: 10px;
+    padding: 0 10px;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+#tray menu {
+    font-family: sans-serif;
+}
+
+/* --------------------------------------------------
+   CPU + MEMORY
+-------------------------------------------------- */
+
+#cpu {
+    border-radius: 0 10px 10px 0;
+    margin-right: 10px;
+}
+
+#memory {
+    border-radius: 10px 0 0 10px;
+}
+
+
+/* --------------------------------------------------
+   WINDOW TITLE
+-------------------------------------------------- */
+
+#window {
+    border-radius: 10px;
+    margin-left: 60px;
+    margin-right: 60px;
+}
+
+/* --------------------------------------------------
+   IDLE INHIBITOR
+-------------------------------------------------- */
+
+#idle_inhibitor {
+    border-radius: 10px 0 0 10px;
+}
+
+#backlight {
+    border-radius: 10px 0px 0px 10px;
+}
+/* --------------------------------------------------
+   CLOCK
+-------------------------------------------------- */
+
+#clock {
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+
+/* --------------------------------------------------
+   NETWORK
+-------------------------------------------------- */
+
+#network {
+    border-radius: 10px 0 0 10px;
+    border-radius: 0 0 0 0;
+
+}
+
+
+/* --------------------------------------------------
+   AUDIO
+-------------------------------------------------- */
+
+#pulseaudio {
+    border-left: 0;
+    border-right: 0;
+}
+
+#pulseaudio.microphone {
+    border-radius: 0 10px 10px 0;
+    border-left: 0;
+    border-right: 0;
+    margin-right: 5px;
+}
+

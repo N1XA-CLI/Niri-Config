@@ -1,0 +1,9 @@
+
+// // // // // // // // // //
+// // // Layer Rules // // //
+// // // // // // // // // //
+
+layer-rule {
+//   match namespace=""
+//   place-within-backdrop true
+}

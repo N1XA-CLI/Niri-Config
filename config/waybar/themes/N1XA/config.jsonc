@@ -1,0 +1,218 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mode": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 0,
+    "modules-left": [
+        "clock",
+        "hyprland/workspaces",
+        "custom/music"
+    ],
+    "modules-center": [
+        "hyprland/window"
+    ],
+    "modules-right": [
+        "tray",
+        "memory",
+        "cpu",
+        "idle_inhibitor",
+        "custom/temperature",
+        "custom/light",
+        "network",
+        "pulseaudio",
+        "pulseaudio#microphone"
+    ],
+    "clock": {
+        "format": " {:%I:%M %p}", // AM PM format
+        "format-alt": " {:%I:%M:%S %p  %A, %d %B, %Y}",
+        "interval": 1,
+        "rotate": 0,
+        "tooltip": true,
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span><b>{}</b></span>",
+                "weekdays": "<span><b>{}</b></span>",
+                "today": "<span color='#cbcdd6ff'><b>{}</b></span>",
+                "days": "<span><b>{}</b></span>"
+            }
+        }
+    },
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "on-click": "activate"
+        // "format": "{icon}",
+    },
+	/*---------------Playerctl---------------*/
+	// "custom/playerctl#backward": {
+	// 	"format": "󰙣 ",
+	// 	"on-click": "playerctl previous",
+	// 	"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+	// 	"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+	// 	"tooltip": false
+	// },
+	// "custom/playerctl#foward": {
+	// 	"format": "󰙡 ",
+	// 	"on-click": "playerctl next",
+	// 	"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+	// 	"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+	// 	"tooltip": false
+	// },
+	// "custom/playerctl#play": {
+	// 	"exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+	// 	"format": "{icon}",
+	// 	"format-icons": {
+	// 		"Paused": "<span> </span>",
+	// 		"Playing": "<span>󰏥 </span>",
+	// 		"Stopped": "<span> </span>"
+	// 	},
+	// 	"on-click": "playerctl play-pause",
+	// 	"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-",
+	// 	"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+	// 	"return-type": "json"
+	// },
+    "custom/music": {
+        "format": "<span>󰎈 {} 󰎈</span>",
+        "format-icons": {
+            // "Playing": " ", // Uncomment if not using the dynamic script
+            "Paused": " ",
+            "Stopped": "&#x202d;ﭥ " // This stop symbol is RTL. So &#x202d; is left-to-right override.
+        },
+        "escape": true,
+        "exec": "~/.config/waybar/scripts/caway -b 10",
+        "return-type": "json",
+        "on-click": "~/.config/hypr/scripts/volume.sh --prev",
+		"on-click-middle": "~/.config/hypr/scripts/volume.sh --play-pause",
+    	"on-click-right": "~/.config/hypr/scripts/volume.sh --next",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+        "max-length": 35,
+		"tooltip": true
+    },
+    "hyprland/window": {
+        "format": "󰣇 {}",
+        "max-length": 30,
+        "tooltip": true
+    },
+    "tray": {
+        "icon-size": 13,
+        "format": "{}",
+        "spacing": 10
+    },
+    "memory": {
+        "states": {
+            "c": 90, // critical
+            "h": 60, // high
+            "m": 30 // medium
+        },
+        "interval": 10,
+        "format": "󰾆 {used}GB",
+        "format-m": "󰾅 {used}GB",
+        "format-h": "󰓅 {used}GB",
+        "format-c": " {used}GB",
+        "format-alt": "󰾆 {percentage}%",
+        "max-length": 10,
+        "tooltip": true,
+        "tooltip-format": "󰾆 {percentage}%\n {used:0.1f}GB/{total:0.1f}GB"
+    },
+    "cpu": {
+        "interval": 10,
+        "format": "󰍛 {usage}%",
+        "format-alt": "{icon0}{icon1}{icon2}{icon3}",
+        "format-icons": [
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ],
+        "tooltip": true
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "rotate": 0,
+        "format-icons": {
+            "activated": "\udb80\udd76",
+            "deactivated": "\udb81\udeca"
+        },
+        "justify": "center",
+        "tooltip": "true",
+        "tooltip-format-activated": "<span foreground='#98c379'>\udb80\udd76 Caffeine Mode Active</span>\nPrevents system from going to sleep",
+        "tooltip-format-deactivated": "<span foreground='#e06c75'>\udb81\udeca Caffeine Mode Inactive</span>\nSystem will follow normal power settings"
+    },
+    "custom/light":{
+            "format": "{icon} ",
+            "format-source": "{icon} ",
+            "tooltip": true,
+            "format-icons": ["󰃞"],
+            "on-scroll-up": "bash ~/.config/waybar/scripts/waybar-light-controls/light_control.sh up",
+            "on-scroll-down": "bash ~/.config/waybar/scripts/waybar-light-controls/light_control.sh down"
+    },
+    "custom/temperature":{
+            "format": "{icon} ",
+            "format-source": "{icon} ",
+            "tooltip": true,
+            "format-icons": ["󰃠"],
+            "on-scroll-up": "bash ~/.config/waybar/scripts/waybar-light-controls/temperature_control.sh up",
+            "on-scroll-down": "bash ~/.config/waybar/scripts/waybar-light-controls/temperature_control.sh down"
+    },
+    "network": {
+        "tooltip": true,
+        "family": "ipv4",
+        "format-wifi": "  {essid}",
+        "format-ethernet": "󰈀",
+        "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nFrequency: <b>{frequency}MHz</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
+        "format-linked": "󰈀 {ifname} (No IP)",
+        "format-disconnected": "󰖪 ",
+        "tooltip-format-disconnected": "Disconnected",
+        "format-alt": "<span> {bandwidthDownBytes}</span> <span> {bandwidthUpBytes}</span>",
+        "interval": 2
+    },
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "tooltip": true,
+        "format-muted": "  Muted",
+        "on-click": "pamixer -t",
+        "on-scroll-up": "pamixer -i 1",
+        "on-scroll-down": "pamixer -d 1",
+        "on-click-right": "pavucontrol",
+        "ignored-sinks": [
+            "Easy Effects Sink"
+        ],
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                "",
+                "",
+                ""
+            ]
+        }
+    },
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "  Muted",
+        "on-click": "pamixer --default-source -t",
+        "on-scroll-up": "pamixer --default-source -i 5",
+        "on-scroll-down": "pamixer --default-source -d 5",
+        "scroll-step": 5
+    }
+}

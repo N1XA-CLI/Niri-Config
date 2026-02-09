@@ -1,0 +1,175 @@
+/***
+ *    ┓ ┏┏┓┓┏┳┓┏┓┳┓  ┳┓┓ ┳┳┏┓┓┏  ┏┓┏┓┳┓┏┓┳┏┓
+ *    ┃┃┃┣┫┗┫┣┫┣┫┣┫━━┣┫┃ ┃┃┗┓┣┫━━┃ ┃┃┃┃┣ ┃┃┓
+ *    ┗┻┛┛┗┗┛┻┛┛┗┛┗  ┻┛┗┛┗┛┗┛┛┗  ┗┛┗┛┛┗┻ ┻┗┛
+ *                                          
+ */
+
+ {
+	 "layer": "bottom",
+	 "position": "top",
+	 "height": 40,
+	 "exclusive": true,
+	 "gtk-layer-shell": true,
+	 "passthrough": false,
+	 "fixed-center": true,
+	 "modules-left": ["custom/launcher", "hyprland/workspaces", "wlr/taskbar", "custom/pacman", "custom/weather", "custom/colorpicker"],
+	 "modules-center": ["custom/music","custom/notification", "battery"],
+	 "modules-right": [
+		 "cpu",
+		 "memory",
+		 "pulseaudio",
+		 "clock",
+		 "clock#simpleclock",
+		 "tray"
+	 ],
+	"custom/music": {
+        "format": "<span>󰎈 {} 󰎈</span>",
+        "format-icons": {
+            // "Playing": " ", // Uncomment if not using the dynamic script
+            "Paused": " ",
+            "Stopped": "&#x202d;ﭥ " // This stop symbol is RTL. So &#x202d; is left-to-right override.
+        },
+        "escape": true,
+        "exec": "~/.config/waybar/scripts/caway -b 10",
+        "return-type": "json",
+        "on-click": "~/.config/hypr/scripts/volume.sh --prev",
+		"on-click-middle": "~/.config/hypr/scripts/volume.sh --play-pause",
+    	"on-click-right": "~/.config/hypr/scripts/volume.sh --next",
+		"on-scroll-up": "~/.config/hypr/scripts/volume.sh --inc",
+		"on-scroll-down": "~/.config/hypr/scripts/volume.sh --dec",
+        "max-length": 35,
+		"tooltip": true
+    },
+	 "hyprland/workspaces": {
+		 "on-click": "activate",
+		 "format": "{id}",
+		 "all-outputs": true,
+		 "disable-scroll": false,
+		 "active-only": false
+	 },
+	 "wlr/taskbar": {
+		 "format": "{icon}",
+		 "rotate": 0,
+		 "icon-size": 18,
+		 "spacing": 0,
+		 "tooltip-format": "{title}",
+		 "on-click": "activate",
+		 "on-click-middle": "close",
+		 "app_ids-mapping": {
+			 "firefoxdeveloperedition": "firefox-developer-edition"
+		 }
+	 },
+	 "tray": {
+		 "show-passive-items": true,
+		 "spacing": 10
+	 },
+	 "clock#simpleclock": {
+		 "tooltip": false,
+		 "format": " {:%H:%M}"
+	 },
+	 "clock": {
+		 "format": " {:L%a %d %b}",
+		 "calendar": {
+			 "mode": "month",
+			 "mode-mon-col": 1,
+			 "on-scroll": 1
+		 },
+		 "tooltip-format": "<span font='GeistMono Nerd Font 14'><tt><small>{calendar}</small></tt></span>"
+	 },
+	 "cpu": {
+		 "format": " {usage}%",
+		 "tooltip": true,
+		 "interval": 1
+	 },
+	 "memory": {
+		 "format": " {used:0.1f}Gi"
+	 },
+	 "pulseaudio": {
+		 "format": "{icon} {volume}%",
+		 "format-muted": " muted",
+		 "format-icons": {
+			 "headphone": "",
+			 "default": ["", "", ""]
+		 },
+		 "on-click": "pavucontrol"
+	 },
+	 "custom/sep": {
+		 "format": "|",
+		 "tooltip": false
+	 },
+	 "custom/launcher": {
+		 "tooltip": false,
+		 "on-click": "~/.config/rofi/scripts/sidelauncher",
+		 "format": "󰣇"
+	 },
+	 "custom/notification": {
+		 "tooltip": true,
+		 "tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
+		 "format": "{} {icon} ",
+		 "format-icons": {
+			 "notification": "<span foreground='red'><sup></sup></span>",
+			 "none": "",
+			 "dnd-notification": "<span foreground='red'><sup></sup></span>",
+			 "dnd-none": "",
+			 "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			 "inhibited-none": "",
+			 "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			 "dnd-inhibited-none": ""
+		 },
+		 "return-type": "json",
+		 "exec-if": "which swaync-client",
+		 "exec": "swaync-client -swb",
+		 "on-click": "sleep 0.1 && swaync-client -t -sw",
+		 "on-click-right": "swaync-client -d -sw",
+		 "escape": true
+	 },
+	 "custom/weather": {
+		 "format": "{}",
+		 "format-alt": "{alt}: {}",
+		 "format-alt-click": "click",
+		 "interval": 3600,
+		 "return-type": "json",
+		 "exec": "$HOME/.config/waybar/scripts/Weather.py",
+	    	 //"exec": "$HOME/.config/hypr/UserScripts/Weather.sh",
+	    	 //"exec-if": "ping wttr.in -c1",
+	    	 "tooltip": true
+	 },
+	 "custom/colorpicker": {
+		 "format": "{}",
+		 "return-type": "json",
+		 "interval": "once",
+		 "exec": "~/.config/waybar/scripts/Colorpicker.sh -j",
+		 "on-click": "~/.config/waybar/scripts/Colorpicker.sh",
+		 "signal": 1
+	 },
+	 "custom/pacman": {
+		 "format": "󰅢{}",
+		 "interval": 30,   
+		 "exec": "checkupdates | wc -l",
+		 "exec-if": "exit 0",
+		 "on-click": "kitty --title PacUpdate sh -c 'sleep 0.1; yay -Syu; echo Done - Press enter to exit; read'; pkill -SIGRTMIN+8 waybar",
+		 "signal": 8,
+		 "tooltip": false
+	 },
+	 "battery": {
+		 "interval": 60,
+		 "align": 0,
+		 "rotate": 0,
+		 "full-at": 100,
+		 "design-capacity": false,
+		 "states": {
+			 "good": 95,
+			 "warning": 30,
+			 "critical": 15
+		 },
+		 "format": "{icon}  {capacity}%",
+		 "format-charging": " {capacity}%",
+		 "format-plugged": "  {capacity}%",
+		 "format-full": "{icon}  Full",
+		 "format-alt": "{icon}  {time}",
+		 "format-icons": ["", "", "", "", ""],
+		 "format-time": "{H}h {M}min",
+		 "tooltip": true
+	 }
+ }
